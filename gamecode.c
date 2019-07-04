@@ -98,7 +98,7 @@ void Tiro(Player jogador,Bala bala[50],int* firerate)
                     else if(jogador.tipo_tiro == 2)
                     {
                         bala[i].tipo_tiro = 2;
-                        bala[i].posicao.x = jogador.nave.x - 8; 
+                        bala[i].posicao.x = jogador.nave.x; 
                         bala[i].posicao.y = jogador.nave.y - 8;
                         bala[i].ativa = true;
                         bala2[i].tipo_tiro = 2;
@@ -106,7 +106,7 @@ void Tiro(Player jogador,Bala bala[50],int* firerate)
                         bala2[i].posicao.y = jogador.nave.y - 8;
                         bala2[i].ativa = true;
                         bala2[i].tipo_tiro = 2;
-                        bala3[i].posicao.x = jogador.nave.x + 8; 
+                        bala3[i].posicao.x = jogador.nave.x; 
                         bala3[i].posicao.y = jogador.nave.y - 8;
                         bala3[i].ativa = true;
                         
@@ -114,6 +114,21 @@ void Tiro(Player jogador,Bala bala[50],int* firerate)
                     else if(jogador.tipo_tiro == 3)
                     {
                         bala[i].tipo_tiro = 3;
+                        bala[i].posicao.x = jogador.nave.x - 5; 
+                        bala[i].posicao.y = jogador.nave.y - 8;
+                        bala[i].ativa = true;
+                        bala2[i].tipo_tiro = 3;
+                        bala2[i].posicao.x = jogador.nave.x + 5; 
+                        bala2[i].posicao.y = jogador.nave.y - 8;
+                        bala2[i].ativa = true;
+                        bala3[i].tipo_tiro = 3;
+                        bala3[i].posicao.x = jogador.nave.x - 8; 
+                        bala3[i].posicao.y = jogador.nave.y - 8;
+                        bala3[i].ativa = true;
+                        bala4[i].tipo_tiro = 3;
+                        bala4[i].posicao.x = jogador.nave.x + 8; 
+                        bala4[i].posicao.y = jogador.nave.y - 8;
+                        bala4[i].ativa = true;
                     }
                     
                     break;
@@ -146,7 +161,7 @@ void Tiro(Player jogador,Bala bala[50],int* firerate)
         }
         else if(bala[i].tipo_tiro == 2)
         {
-            if(bala[i].posicao.y>0 && bala[i].ativa)
+            if(bala[i].posicao.y>0 && bala[i].ativa && bala2[i].posicao.y>0 && bala2[i].ativa && bala3[i].posicao.y>0 && bala3[i].ativa)
             {
                 bala[i].posicao.y -= jogador.shotspeed.y;
                 bala[i].posicao.x -= jogador.shotspeed.x;
@@ -156,6 +171,22 @@ void Tiro(Player jogador,Bala bala[50],int* firerate)
                 bala3[i].posicao.y -= jogador.shotspeed.y;
                 bala3[i].posicao.x += jogador.shotspeed.x;
                 DrawCircle(bala3[i].posicao.x,bala3[i].posicao.y,3,jogador.cor_bala);
+            }
+        }
+        else if(bala[i].tipo_tiro == 3)
+        {
+            if(bala[i].posicao.y>0 && bala[i].ativa && bala2[i].posicao.y>0 && bala2[i].ativa && bala3[i].posicao.y>0 && bala3[i].ativa && bala4[i].posicao.y>0 && bala4[i].ativa)
+            {
+                bala[i].posicao.y -= jogador.shotspeed.y;
+                DrawCircle(bala[i].posicao.x,bala[i].posicao.y,3,jogador.cor_bala);
+                bala2[i].posicao.y -= jogador.shotspeed.y;
+                DrawCircle(bala2[i].posicao.x,bala2[i].posicao.y,3,jogador.cor_bala);
+                bala3[i].posicao.y -= jogador.shotspeed.y;
+                bala3[i].posicao.x -= jogador.shotspeed.x;
+                DrawCircle(bala3[i].posicao.x,bala3[i].posicao.y,3,jogador.cor_bala);
+                bala4[i].posicao.y -= jogador.shotspeed.y;
+                bala4[i].posicao.x += jogador.shotspeed.x;
+                DrawCircle(bala4[i].posicao.x,bala4[i].posicao.y,3,jogador.cor_bala);
             }
         }
         if(bala[i].posicao.y<0 || bala[i].posicao.x<0 || bala[i].posicao.x>720)
@@ -197,9 +228,10 @@ int main(void)
         Tiro(jogador,bala,&jogador.firerate);
         Troca_tiro(&jogador.tipo_tiro);
         ClearBackground(RAYWHITE);
-        DrawText("0 - Tiro Normal",400,400,20,LIGHTGRAY);
-        DrawText("1 - Tiro Duplo",400,430,20,LIGHTGRAY);
-        DrawText("2 - Tiro Triplo",400,460,20,LIGHTGRAY);
+        DrawText("0 - Tiro Normal",300,400,20,LIGHTGRAY);
+        DrawText("1 - Tiro Duplo",300,430,20,LIGHTGRAY);
+        DrawText("2 - Tiro Triplo",300,460,20,LIGHTGRAY);
+        DrawText("3 - Tiro Duplo com 2 auxiliares",300,490,20,LIGHTGRAY);
         DrawText(TextFormat("%i",jogador.tipo_tiro),200,200,20,BLACK);
         DrawCircle(jogador.nave.x,jogador.nave.y,8,jogador.cor_nave);
         
