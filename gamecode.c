@@ -8,6 +8,7 @@ typedef struct Player //Estrutura com parâmetros do player e alguns parâmetros
     int firerate;
     Color cor_nave;
     Color cor_bala;
+    int tipo_tiro;
     float raio;
 }Player;
 
@@ -15,6 +16,7 @@ typedef struct Bala //Estrutura com parâmetros para movimentação dos tiros
 {
     Vector2 posicao;
     bool ativa;
+    int tipo_tiro;
 }Bala;
 
 /*typedef struct Inimigu//estrutura para fazer os inimigos e futuramente suas balas
@@ -26,7 +28,11 @@ typedef struct Bala //Estrutura com parâmetros para movimentação dos tiros
 }Inimigu*/
 
 static Player jogador = {0};
-static Bala bala[50] = {0}; //O vetor bala é necessário pois cada elemento dele é uma bala na tela
+static Bala bala[50] = {0};
+static Bala bala2[50] = {0};
+static Bala bala3[50] = {0};
+static Bala bala4[50] = {0};
+ //O vetor bala é necessário pois cada elemento dele é uma bala na tela
 //static Inimigu foe[50]={0}//O vetor bala é necessário pois cada elemento dele é um na tela
 
 void creditos()
@@ -152,8 +158,28 @@ void Movimento() //Função de movimentação
     
 }
 
+void Troca_tiro(int *tipo)
+{
+    if(IsKeyPressed('0'))
+    {
+        (*tipo) = 0;
+    }
+    if(IsKeyPressed('1'))
+    {
+        (*tipo) = 1;
+    }
+    if(IsKeyPressed('2'))
+    {
+        (*tipo) = 2;
+    }
+    if(IsKeyPressed('3'))
+    {
+        (*tipo) = 3;
+    }
+}
 
-void Tiro(Player jogador,Bala bala[50],int* firerate)
+
+void Tiro(Player jogador,int* firerate)
 {
     if(IsKeyDown(KEY_SPACE)) //Se a barra de espaço está apertada, os tiros saem
     {
@@ -165,30 +191,124 @@ void Tiro(Player jogador,Bala bala[50],int* firerate)
                 if(!bala[i].ativa)
                 {
                     //A bala inicia na posição do player, na "ponta da frente"
-                    bala[i].posicao.x = jogador.nave.x+20; 
-                    bala[i].posicao.y = jogador.nave.y - 8;
-                    bala[i].ativa = true;
+                    if(jogador.tipo_tiro == 0)
+                    {
+                        bala[i].tipo_tiro = 0;
+                        bala[i].posicao.x = jogador.nave.x + 20; 
+                        bala[i].posicao.y = jogador.nave.y - 8;
+                        bala[i].ativa = true;
+                    }
+                    else if(jogador.tipo_tiro == 1)
+                    {
+                        bala[i].tipo_tiro = 1;
+                        bala[i].posicao.x = jogador.nave.x + 15; 
+                        bala[i].posicao.y = jogador.nave.y - 8;
+                        bala[i].ativa = true;
+                        bala2[i].tipo_tiro = 1;
+                        bala2[i].posicao.x = jogador.nave.x + 25; 
+                        bala2[i].posicao.y = jogador.nave.y - 8;
+                        bala2[i].ativa = true;
+                    }
+                    else if(jogador.tipo_tiro == 2)
+                    {
+                        bala[i].tipo_tiro = 2;
+                        bala[i].posicao.x = jogador.nave.x + 20; 
+                        bala[i].posicao.y = jogador.nave.y - 8;
+                        bala[i].ativa = true;
+                        bala2[i].tipo_tiro = 2;
+                        bala2[i].posicao.x = jogador.nave.x + 20; 
+                        bala2[i].posicao.y = jogador.nave.y - 8;
+                        bala2[i].ativa = true;
+                        bala2[i].tipo_tiro = 2;
+                        bala3[i].posicao.x = jogador.nave.x + 20; 
+                        bala3[i].posicao.y = jogador.nave.y - 8;
+                        bala3[i].ativa = true;
+                        
+                    }
+                    else if(jogador.tipo_tiro == 3)
+                    {
+                        bala[i].tipo_tiro = 3;
+                        bala[i].posicao.x = jogador.nave.x + 15; 
+                        bala[i].posicao.y = jogador.nave.y - 8;
+                        bala[i].ativa = true;
+                        bala2[i].tipo_tiro = 3;
+                        bala2[i].posicao.x = jogador.nave.x + 25; 
+                        bala2[i].posicao.y = jogador.nave.y - 8;
+                        bala2[i].ativa = true;
+                        bala3[i].tipo_tiro = 3;
+                        bala3[i].posicao.x = jogador.nave.x + 12; 
+                        bala3[i].posicao.y = jogador.nave.y - 8;
+                        bala3[i].ativa = true;
+                        bala4[i].tipo_tiro = 3;
+                        bala4[i].posicao.x = jogador.nave.x + 28; 
+                        bala4[i].posicao.y = jogador.nave.y - 8;
+                        bala4[i].ativa = true;
+                    }
+                    
                     break;
                 }
             }
             (*firerate) = 0;
         }
     }
+
     for(int i = 0;i<50;i++)
     {
-        if(bala[i].posicao.y>0 && bala[i].ativa)
+        if(bala[i].tipo_tiro == 0)
         {
-            //A bala se movimenta de acordo com a "shotspeed(Velocidade do tiro)"
-            bala[i].posicao.y -= jogador.shotspeed.y;
-            DrawCircle(bala[i].posicao.x,bala[i].posicao.y,3,jogador.cor_bala);
+            if(bala[i].posicao.y>0 && bala[i].ativa)
+            {
+                //A bala se movimenta de acordo com a "shotspeed(Velocidade do tiro)"
+                bala[i].posicao.y -= jogador.shotspeed.y;
+                DrawCircle(bala[i].posicao.x,bala[i].posicao.y,3,jogador.cor_bala);
+            }
         }
-        if(bala[i].posicao.y<0)
+        else if(bala[i].tipo_tiro == 1)
+        {
+            if(bala[i].posicao.y>0 && bala[i].ativa && bala2[i].posicao.y>0 && bala2[i].ativa)
+            {
+                bala[i].posicao.y -= jogador.shotspeed.y;
+                DrawCircle(bala[i].posicao.x,bala[i].posicao.y,3,jogador.cor_bala);
+                bala2[i].posicao.y -= jogador.shotspeed.y;
+                DrawCircle(bala2[i].posicao.x,bala2[i].posicao.y,3,jogador.cor_bala);
+            }
+        }
+        else if(bala[i].tipo_tiro == 2)
+        {
+            if(bala[i].posicao.y>0 && bala[i].ativa && bala2[i].posicao.y>0 && bala2[i].ativa && bala3[i].posicao.y>0 && bala3[i].ativa)
+            {
+                bala[i].posicao.y -= jogador.shotspeed.y;
+                bala[i].posicao.x -= jogador.shotspeed.x;
+                DrawCircle(bala[i].posicao.x,bala[i].posicao.y,3,jogador.cor_bala);
+                bala2[i].posicao.y -= jogador.shotspeed.y;
+                DrawCircle(bala2[i].posicao.x,bala2[i].posicao.y,3,jogador.cor_bala);
+                bala3[i].posicao.y -= jogador.shotspeed.y;
+                bala3[i].posicao.x += jogador.shotspeed.x;
+                DrawCircle(bala3[i].posicao.x,bala3[i].posicao.y,3,jogador.cor_bala);
+            }
+        }
+        else if(bala[i].tipo_tiro == 3)
+        {
+            if(bala[i].posicao.y>0 && bala[i].ativa && bala2[i].posicao.y>0 && bala2[i].ativa && bala3[i].posicao.y>0 && bala3[i].ativa && bala4[i].posicao.y>0 && bala4[i].ativa)
+            {
+                bala[i].posicao.y -= jogador.shotspeed.y;
+                DrawCircle(bala[i].posicao.x,bala[i].posicao.y,3,jogador.cor_bala);
+                bala2[i].posicao.y -= jogador.shotspeed.y;
+                DrawCircle(bala2[i].posicao.x,bala2[i].posicao.y,3,jogador.cor_bala);
+                bala3[i].posicao.y -= jogador.shotspeed.y;
+                bala3[i].posicao.x -= jogador.shotspeed.x;
+                DrawCircle(bala3[i].posicao.x,bala3[i].posicao.y,3,jogador.cor_bala);
+                bala4[i].posicao.y -= jogador.shotspeed.y;
+                bala4[i].posicao.x += jogador.shotspeed.x;
+                DrawCircle(bala4[i].posicao.x,bala4[i].posicao.y,3,jogador.cor_bala);
+            }
+        }
+        if(bala[i].posicao.y<0 || bala[i].posicao.x<0 || bala[i].posicao.x>720)
         {
             //Se a bala sair da tela, ela fica inativa(pra poupar memória e pra ele poder ser "atirada de novo")
             bala[i].ativa = false;
         }
     }
-        
 }
 
 int main(void)
@@ -205,7 +325,7 @@ int main(void)
     jogador.firerate = 0;
     jogador.vel.x = 8;
     jogador.vel.y = 8;
-    jogador.shotspeed.x = 15;
+    jogador.shotspeed.x = 2;
     jogador.shotspeed.y = 15;
     jogador.cor_nave = BLACK;
     jogador.cor_bala = ORANGE;
@@ -218,10 +338,10 @@ int main(void)
     InitWindow(Largura_Tela,Altura_Tela,"Starlight Drift");
     
     //carregando imagens e criando texturas, favor copiar o caminho e copiar
-    Image imageyy = LoadImage("/Users/lucas/Pictures/FFXV TRAB/bckatt.png");
-    Image background = LoadImage("/Users/lucas/Pictures/FFXV TRAB/space.png");
+    Image imageyy = LoadImage("/raylib/StarlightDrift/texture/fundo.png");
+    Image background = LoadImage("/raylib/StarlightDrift/texture/space.png");
     ImageResize(&background,720,876);
-    Image nave1 = LoadImage("/Users/lucas/Pictures/FFXV TRAB/navee.png");
+    Image nave1 = LoadImage("/raylib/StarlightDrift/texture/nave.png");
     ImageResize(&nave1,40,50);
     Texture2D bck = LoadTextureFromImage(imageyy);
     Texture2D nave = LoadTextureFromImage(nave1);
@@ -256,11 +376,10 @@ int main(void)
         ClearBackground(RAYWHITE);
         DrawTextureEx(fundo,(Vector2){0,movbackground},0.0f,1.0f,WHITE);
         DrawTextureEx(fundo,(Vector2){0,-background.height + movbackground},0.0f,1.0f,WHITE);
-        //Muito importante
-        DrawText("homem negro fodase",Largura_Tela/2,Altura_Tela/2,20,LIGHTGRAY);
         //DrawCircle(jogador.nave.x,jogador.nave.y,8,jogador.cor_nave);
         DrawTexture(nave,jogador.nave.x,jogador.nave.y,RAYWHITE);
-        Tiro(jogador,bala,&jogador.firerate);
+        Tiro(jogador,&jogador.firerate);
+        Troca_tiro(&jogador.tipo_tiro);
         
         EndDrawing();
     }
